@@ -15,12 +15,24 @@ using BenchmarkDotNet.Toolchains;
 
 namespace ConsoleApp1
 {
-    [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 300)]
+    [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 50)]
     public class Benchmarks
     {
+        private readonly int _min;
+        private readonly int _any;
+        private readonly int _max;
+
         public Benchmarks()
         {
             LinqToDB.Common.Configuration.Linq.AllowMultipleQuery = true;
+            using (var db = new EFCoreDb())
+            {
+                _min = db.OrderReturn.Min(e => e.Id);
+                _max = db.OrderReturn.Max(e => e.Id);
+                _any = (_min + _max) / 2;
+
+                Console.WriteLine($"{_min},{_any},{_max}");
+            }
         }
 
         [Benchmark]
@@ -42,17 +54,17 @@ namespace ConsoleApp1
             config = config ?? new Func<IQueryable<OrderReturn>, IQueryable<OrderReturn>>(e => e);
             using (var db = new TDB())
             {
-                var rt = config(db.GetAll()).Where(e => e.Id == 1011).FirstOrDefault();
+                var rt = config(db.GetAll()).Where(e => e.Id == _min).FirstOrDefault();
                 if (rt != null)
                 {
                     x++;
                 }
-                rt = config(db.GetAll()).Where(e => e.Id == 11010).FirstOrDefault();
+                rt = config(db.GetAll()).Where(e => e.Id == _max).FirstOrDefault();
                 if (rt != null)
                 {
                     x++;
                 }
-                rt = config(db.GetAll()).Where(e => e.Id == 5011).FirstOrDefault();
+                rt = config(db.GetAll()).Where(e => e.Id == _any).FirstOrDefault();
                 if (rt != null)
                 {
                     x++;
@@ -85,7 +97,7 @@ namespace ConsoleApp1
     public class ReturnManagementDB : DataConnection, IDisposable, ISomeAll
     {
         public ReturnManagementDB()
-            : base("SqlServer.2014", "Server=.;Database=R1OrderRefundService_TEST;Integrated Security=SSPI")
+            : base("SqlServer.2014", "Server=.;Database=OrderReturnService;Integrated Security=SSPI")
         {
         }
 

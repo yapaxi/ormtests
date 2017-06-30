@@ -22,7 +22,7 @@ namespace ConsoleApp20
         {
             SqlServerDbContextOptionsExtensions.UseSqlServer(
                 optionsBuilder,
-                "Server=.;Database=R1OrderRefundService_TEST;Integrated Security=SSPI");
+                "Server=.;Database=OrderReturnService;Integrated Security=SSPI");
             base.OnConfiguring(optionsBuilder);
         }
 

@@ -109,12 +109,6 @@ namespace ConsoleApp20
 
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("Server=.;Database=OrderReturnService;Integrated Security=SSPI");
-        //    base.OnConfiguring(optionsBuilder);
-        //}
-
         public DbSet<OrderReturn> OrderReturn { get; set; }
         public DbSet<OrderReturnReason> OrderReturnReason { get; set; }
         public DbSet<OrderReturnLine> OrderReturnLine { get; set; }

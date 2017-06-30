@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <Compile Update="EFCoreDb.cs" />
-    <Compile Update="Model\ConcurrencyException.cs" />
   </ItemGroup>
 
 </Project>

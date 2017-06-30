@@ -11,15 +11,15 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnReason
     {
         [PrimaryKey, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public int MarketplaceId { get; set; }
+        public virtual int MarketplaceId { get; set; }
 
         [Column, NotNull]
-        public string MarketplaceReason { get; set; }
+        public virtual string MarketplaceReason { get; set; }
 
         [Column, NotNull]
-        public int R1ReturnReasonId { get; set; }
+        public virtual int R1ReturnReasonId { get; set; }
     }
 }

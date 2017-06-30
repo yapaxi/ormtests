@@ -11,9 +11,9 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnRawData
     {
         [PrimaryKey, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public string Raw { get; set; }
+        public virtual string Raw { get; set; }
     }
 }

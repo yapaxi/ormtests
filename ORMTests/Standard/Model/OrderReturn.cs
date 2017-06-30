@@ -11,68 +11,68 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturn 
     {
         [PrimaryKey, Identity, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public string VenueReturnId { get; set; }
+        public virtual string VenueReturnId { get; set; }
 
         [Column, NotNull]
-        public string PurchaseOrderId { get; set; }
+        public virtual string PurchaseOrderId { get; set; }
 
         [Column, NotNull]
-        public int SellingVendorId { get; set; }
+        public virtual int SellingVendorId { get; set; }
 
         [Column, NotNull]
-        public DateTime VenueCreatedOn { get; set; }
+        public virtual DateTime VenueCreatedOn { get; set; }
 
         [Column, NotNull]
-        public DateTime CreatedOn { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
 
         [Column, Nullable]
-        public DateTime? UpdatedOn { get; set; }
+        public virtual DateTime? UpdatedOn { get; set; }
 
         [Column, NotNull]
-        public bool RefundWithoutReturn { get; set; }
+        public virtual bool RefundWithoutReturn { get; set; }
 
         [Column, NotNull]
-        public OrderReturnStatus StatusId { get; set; }
+        public virtual OrderReturnStatus StatusId { get; set; }
 
         [Column, NotNull]
-        public int ReturnWorkflowStepId { get; set; }
+        public virtual int ReturnWorkflowStepId { get; set; }
 
         [Column, Nullable]
-        public string StatusMessage { get; set; }
+        public virtual string StatusMessage { get; set; }
 
         [Column, Nullable]
-        public string ShippingCarrier { get; set; }
+        public virtual string ShippingCarrier { get; set; }
 
         [Column, Nullable]
-        public string ShippingTrackingNumber { get; set; }
+        public virtual string ShippingTrackingNumber { get; set; }
 
         [Column, NotNull]
-        public decimal ReturnCharge { get; set; }
+        public virtual decimal ReturnCharge { get; set; }
 
         [Column, NotNull]
-        public bool IsInRecovery { get; set; }
+        public virtual bool IsInRecovery { get; set; }
 
         [Column, Nullable]
-        public int? CurrentDecisionId { get; set; }
+        public virtual int? CurrentDecisionId { get; set; }
 
         [Association(ThisKey = nameof(Id), OtherKey = nameof(OrderReturnLine.OrderReturnId), CanBeNull = false)]
-        public ICollection<OrderReturnLine> ReturnLines { get; set; }
+        public virtual ICollection<OrderReturnLine> ReturnLines { get; set; }
 
         [Association(ThisKey = nameof(Id), OtherKey = nameof(Model.OrderReturnRawData.Id), CanBeNull = false)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(Id))]
-        public OrderReturnRawData OrderReturnRawData { get; set; }
+        public virtual OrderReturnRawData OrderReturnRawData { get; set; }
 
         [Association(ThisKey = nameof(Id), OtherKey = nameof(OrderReturnFile.OrderReturnId), CanBeNull = false)]
-        public ICollection<OrderReturnFile> Files { get; set; }
+        public virtual ICollection<OrderReturnFile> Files { get; set; }
 
         [Association(ThisKey = nameof(Id), OtherKey = nameof(OrderReturnInternalRefund.OrderReturnId), CanBeNull = true)]
-        public ICollection<OrderReturnInternalRefund> InternalRefunds { get; set; }
+        public virtual ICollection<OrderReturnInternalRefund> InternalRefunds { get; set; }
 
         [Association(ThisKey = nameof(Model.OrderReturn.CurrentDecisionId), OtherKey = nameof(Model.Decision.Id), CanBeNull = true)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(CurrentDecisionId))]
-        public Decision CurrentDecision { get; set; }
+        public virtual Decision CurrentDecision { get; set; }
     }
 }

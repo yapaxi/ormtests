@@ -12,16 +12,16 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnInternalRefund
     {
         [Identity, PrimaryKey, Column]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column]
-        public int OrderReturnId { get; set; }
+        public virtual int OrderReturnId { get; set; }
 
         [Column]
-        public string OrderRefundRequestId { get; set; }
+        public virtual string OrderRefundRequestId { get; set; }
 
         [Association(ThisKey = nameof(OrderReturnId), OtherKey = nameof(Model.OrderReturn.Id))]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnId))]
-        public OrderReturn OrderReturn { get; set; }
+        public virtual OrderReturn OrderReturn { get; set; }
     }
 }

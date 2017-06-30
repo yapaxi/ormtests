@@ -11,22 +11,22 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class DecisionLabel
     {
         [PrimaryKey, Identity, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public int DecisionId { get; set; }
+        public virtual int DecisionId { get; set; }
 
         [Column, NotNull]
-        public string TrackingNumber { get; set; }
+        public virtual string TrackingNumber { get; set; }
 
         [Column, NotNull]
-        public string LabelGifUri { get; set; }
+        public virtual string LabelGifUri { get; set; }
 
         [Column, NotNull]
-        public int ShippingCarrier { get; set; }
+        public virtual int ShippingCarrier { get; set; }
 
         [Association(ThisKey = nameof(Model.DecisionLabel.DecisionId), OtherKey = nameof(Model.Decision.Id), CanBeNull = false)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(DecisionId))]
-        public Decision Decision { get; set; }
+        public virtual Decision Decision { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     {
         [PrimaryKey]
         [System.ComponentModel.DataAnnotations.Key]
-        public int SellingVendorId { get; set; }
+        public virtual int SellingVendorId { get; set; }
 
         [Column, Nullable]
-        public DateTime? OrdersPolledOn { get; set; }
+        public virtual DateTime? OrdersPolledOn { get; set; }
     }
 }

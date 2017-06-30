@@ -12,27 +12,27 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     {
         [PrimaryKey, Identity, NotNull]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(DecisionLine))]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public int DecisionLineId { get; set; }
+        public virtual int DecisionLineId { get; set; }
 
         [Column, NotNull]
-        public decimal SaleAmount { get; set; }
+        public virtual decimal SaleAmount { get; set; }
 
         [Column, NotNull]
-        public decimal TaxAmount { get; set; }
+        public virtual decimal TaxAmount { get; set; }
 
         [Column, NotNull]
-        public decimal ShippingAmount { get; set; }
+        public virtual decimal ShippingAmount { get; set; }
         
         [Column, NotNull]
-        public decimal ShippingTaxAmount { get; set; }
+        public virtual decimal ShippingTaxAmount { get; set; }
 
         [Column, NotNull]
-        public string CurrencyCode { get; set; }
+        public virtual string CurrencyCode { get; set; }
 
         [Association(ThisKey = nameof(DecisionLineId), OtherKey = nameof(Model.DecisionLine.Id), CanBeNull = false)]
-        public DecisionLine DecisionLine { get; set; }
+        public virtual DecisionLine DecisionLine { get; set; }
     }
 }

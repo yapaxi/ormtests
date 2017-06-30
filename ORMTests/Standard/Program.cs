@@ -54,18 +54,8 @@ namespace ConsoleApp1
             config = config ?? new Func<IQueryable<OrderReturn>, IQueryable<OrderReturn>>(e => e);
             using (var db = new TDB())
             {
-                var rt = config(db.GetAll()).Where(e => e.Id == _min).FirstOrDefault();
-                if (rt != null)
-                {
-                    x++;
-                }
-                rt = config(db.GetAll()).Where(e => e.Id == _max).FirstOrDefault();
-                if (rt != null)
-                {
-                    x++;
-                }
-                rt = config(db.GetAll()).Where(e => e.Id == _any).FirstOrDefault();
-                if (rt != null)
+                var rt = config(db.GetAll()).Where(e => e.Id >= _any && e.Id < _any + 20).ToArray();
+                if (rt.Any())
                 {
                     x++;
                 }

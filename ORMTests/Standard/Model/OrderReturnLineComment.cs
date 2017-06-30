@@ -11,18 +11,18 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnLineComment 
     {
         [PrimaryKey, Identity, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [NotNull]
         [Column]
-        public int OrderReturnLineId { get; set; }
+        public virtual int OrderReturnLineId { get; set; }
 
         [NotNull]
         [Column]
-        public string Comment { get; set; }
+        public virtual string Comment { get; set; }
 
         [Association(ThisKey = nameof(OrderReturnLineId), OtherKey = nameof(Model.OrderReturnLine.Id), CanBeNull = false)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnLineId))]
-        public OrderReturnLine OrderReturnLine { get; set; }
+        public virtual OrderReturnLine OrderReturnLine { get; set; }
     }
 }

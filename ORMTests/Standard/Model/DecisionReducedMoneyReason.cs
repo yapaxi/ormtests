@@ -12,15 +12,15 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     {
         [PrimaryKey, Identity, NotNull]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(DecisionLine))]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public int DecisionLineId { get; set; }
+        public virtual int DecisionLineId { get; set; }
 
         [Column, NotNull]
-        public string ReducedMoneyReason { get; set; }
+        public virtual string ReducedMoneyReason { get; set; }
 
         [Association(ThisKey = nameof(DecisionLineId), OtherKey = nameof(Model.DecisionLine.Id), CanBeNull = false)]
-        public DecisionLine DecisionLine { get; set; }
+        public virtual DecisionLine DecisionLine { get; set; }
     }
 }

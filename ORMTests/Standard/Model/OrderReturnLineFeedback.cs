@@ -6,13 +6,13 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnLineFeedback
     {
         [PrimaryKey]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
-        public int SellingVendorId { get; set; }
+        public virtual int SellingVendorId { get; set; }
 
         [NotNull]
-        public string SellingVendorReason { get; set; }
+        public virtual string SellingVendorReason { get; set; }
 
-        public int R1FeedbackId { get; set; }
+        public virtual int R1FeedbackId { get; set; }
     }
 }

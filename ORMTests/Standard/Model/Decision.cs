@@ -11,24 +11,24 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class Decision
     {
         [PrimaryKey, Identity, NotNull]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column, NotNull]
-        public Guid PublicDecisionId { get; set; }
+        public virtual Guid PublicDecisionId { get; set; }
 
         [Column, NotNull]
-        public string Code { get; set; }
+        public virtual string Code { get; set; }
 
         [Column, NotNull]
-        public DateTime CreatedOn { get; set; }
+        public virtual DateTime CreatedOn { get; set; }
 
         [Column, NotNull]
-        public int OrderReturnId { get; set; }
+        public virtual int OrderReturnId { get; set; }
 
         [Association(ThisKey = nameof(Id), OtherKey = nameof(DecisionLabel.DecisionId), CanBeNull = true)]
-        public ICollection<DecisionLabel> Labels { get; set; }
+        public virtual ICollection<DecisionLabel> Labels { get; set; }
 
         [Association(ThisKey = nameof(Decision.Id), OtherKey = nameof(Model.DecisionLine.DecisionId), CanBeNull = false)]
-        public ICollection<DecisionLine> DecisionLine { get; set; }
+        public virtual ICollection<DecisionLine> DecisionLine { get; set; }
     }
 }

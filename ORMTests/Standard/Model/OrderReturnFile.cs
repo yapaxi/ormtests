@@ -18,31 +18,31 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
     public class OrderReturnFile
     {
         [PrimaryKey, Identity, NotNull, Column]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
         [Column]
-        public int OrderReturnId { get; set; }
+        public virtual int OrderReturnId { get; set; }
 
         [NotNull, Column]
-        public string FileName { get; set; }
+        public virtual string FileName { get; set; }
 
         [Column]
-        public OrderReturnFileType FileTypeId { get; set; }
+        public virtual OrderReturnFileType FileTypeId { get; set; }
 
         [NotNull, Column]
-        public string VenueFileId { get; set; }
+        public virtual string VenueFileId { get; set; }
 
         [NotNull, Column]
-        public byte[] Data { get; set; }
+        public virtual byte[] Data { get; set; }
 
         [NotNull, Column]
-        public string Purpose { get; set; }
+        public virtual string Purpose { get; set; }
 
         [NotNull, Column]
-        public string Submitter { get; set; }
+        public virtual string Submitter { get; set; }
 
         [Association(IsBackReference = false, CanBeNull = false, ThisKey = nameof(OrderReturnId), OtherKey = nameof(Model.OrderReturn.Id))]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnId))]
-        public OrderReturn OrderReturn { get; set; }
+        public virtual OrderReturn OrderReturn { get; set; }
     }
 }

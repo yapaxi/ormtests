@@ -8,7 +8,22 @@ using System.Threading.Tasks;
 namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("OrderReturnLine")]
-    public class OrderReturnLine
+    public class OrderReturnLine : OrderReturnLineSimple
+    {
+        [Association(ThisKey = nameof(Model.OrderReturnLine.OrderReturnId), OtherKey = nameof(Model.OrderReturn.Id))]
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnId))]
+        public virtual OrderReturn OrderReturn { get; set; }
+
+        [Association(ThisKey = nameof(Model.OrderReturnLine.ReasonId), OtherKey = nameof(Model.OrderReturnReason.Id))]
+        [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(ReasonId))]
+        public virtual OrderReturnReason Reason { get; set; }
+
+        [Association(ThisKey = nameof(Model.OrderReturnLine.Id), OtherKey = nameof(Model.OrderReturnLineComment.OrderReturnLineId))]
+        public virtual ICollection<OrderReturnLineComment> Comments { get; set; }
+    }
+
+    [System.ComponentModel.DataAnnotations.Schema.Table("OrderReturnLine")]
+    public class OrderReturnLineSimple
     {
         [PrimaryKey, Identity, NotNull]
         public virtual int Id { get; set; }
@@ -43,15 +58,5 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
         [Column, NotNull]
         public virtual decimal ShippingTaxAmount { get; set; }
 
-        [Association(ThisKey = nameof(Model.OrderReturnLine.OrderReturnId), OtherKey = nameof(Model.OrderReturn.Id))]
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnId))]
-        public virtual OrderReturn OrderReturn { get; set; }
-
-        [Association(ThisKey = nameof(Model.OrderReturnLine.ReasonId), OtherKey = nameof(Model.OrderReturnReason.Id))]
-        [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(ReasonId))]
-        public virtual OrderReturnReason Reason { get; set; }
-
-        [Association(ThisKey = nameof(Model.OrderReturnLine.Id), OtherKey = nameof(Model.OrderReturnLineComment.OrderReturnLineId))]
-        public virtual ICollection<OrderReturnLineComment> Comments { get; set; }
     }
 }

@@ -23,9 +23,19 @@ namespace ConsoleApp20
         public abstract IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes();
     }
 
-    public class EFCoreDbSimple : EFCoreBase
+    public class EFCoreDbSimple : EFCoreBase, IEFCoreDbSimpleNoTracking
     {
+        public DbSet<DecisionSimple> DecisionSimple { get; set; }
+        public DbSet<OrderReturnLineSimple> OrderReturnLineSimple { get; set; }
+        public DbSet<DecisionLineSimple> DecisionLineSimple { get; set; }
         public DbSet<OrderReturnSimple> OrderReturnSimple { get; set; }
+        public DbSet<DecisionRefundSimple> DecisionRefundSimple { get; set; }
+
+        IQueryable<DecisionRefundSimple> IEFCoreDbSimpleNoTracking.DecisionRefundSimple => this.DecisionRefundSimple.AsNoTracking();
+        IQueryable<DecisionSimple> IEFCoreDbSimpleNoTracking.DecisionSimple => this.DecisionSimple.AsNoTracking();
+        IQueryable<OrderReturnLineSimple> IEFCoreDbSimpleNoTracking.OrderReturnLineSimple => this.OrderReturnLineSimple.AsNoTracking();
+        IQueryable<DecisionLineSimple> IEFCoreDbSimpleNoTracking.DecisionLineSimple => this.DecisionLineSimple.AsNoTracking();
+        IQueryable<OrderReturnSimple> IEFCoreDbSimpleNoTracking.OrderReturnSimple => this.OrderReturnSimple.AsNoTracking();
 
         public override IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes()
         {
@@ -36,6 +46,15 @@ namespace ConsoleApp20
         {
             throw new NotImplementedException();
         }
+    }
+
+    public interface IEFCoreDbSimpleNoTracking
+    {
+        IQueryable<DecisionRefundSimple> DecisionRefundSimple { get; }
+        IQueryable<DecisionSimple> DecisionSimple { get; }
+        IQueryable<OrderReturnLineSimple> OrderReturnLineSimple { get; }
+        IQueryable<DecisionLineSimple> DecisionLineSimple { get; }
+        IQueryable<OrderReturnSimple> OrderReturnSimple { get; }
     }
 
     public class EFCoreDb : EFCoreBase

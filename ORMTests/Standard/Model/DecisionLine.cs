@@ -8,17 +8,8 @@ using System.Threading.Tasks;
 namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("DecisionLine")]
-    public class DecisionLine
+    public class DecisionLine : DecisionLineSimple
     {
-        [PrimaryKey, Identity, NotNull]
-        public virtual int Id { get; set; }
-
-        [Column, NotNull]
-        public virtual int OrderReturnLineId { get; set; }
-
-        [Column, NotNull]
-        public virtual int DecisionId { get; set; }
-
         [Association(ThisKey = nameof(Id), OtherKey = nameof(DecisionRefund.DecisionLineId), CanBeNull = true)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(Id))]
         public virtual DecisionRefund Refund { get; set; }
@@ -34,5 +25,18 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
         [Association(ThisKey = nameof(OrderReturnLineId), OtherKey = nameof(Model.OrderReturnLine.Id), CanBeNull = false)]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(OrderReturnLineId))]
         public virtual OrderReturnLine OrderReturnLine { get; set; }
+    }
+
+    [System.ComponentModel.DataAnnotations.Schema.Table("DecisionLine")]
+    public class DecisionLineSimple
+    {
+        [PrimaryKey, Identity, NotNull]
+        public virtual int Id { get; set; }
+
+        [Column, NotNull]
+        public virtual int OrderReturnLineId { get; set; }
+
+        [Column, NotNull]
+        public virtual int DecisionId { get; set; }
     }
 }

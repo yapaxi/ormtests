@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
 {
     [System.ComponentModel.DataAnnotations.Schema.Table("DecisionRefund")]
-    public class DecisionRefund
+    public class DecisionRefund : DecisionRefundSimple
+    {
+        [Association(ThisKey = nameof(DecisionLineId), OtherKey = nameof(Model.DecisionLine.Id), CanBeNull = false)]
+        public virtual DecisionLine DecisionLine { get; set; }
+    }
+
+    [System.ComponentModel.DataAnnotations.Schema.Table("DecisionRefund")]
+    public class DecisionRefundSimple
     {
         [PrimaryKey, Identity, NotNull]
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(DecisionLine))]
@@ -25,14 +32,11 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
 
         [Column, NotNull]
         public virtual decimal ShippingAmount { get; set; }
-        
+
         [Column, NotNull]
         public virtual decimal ShippingTaxAmount { get; set; }
 
         [Column, NotNull]
         public virtual string CurrencyCode { get; set; }
-
-        [Association(ThisKey = nameof(DecisionLineId), OtherKey = nameof(Model.DecisionLine.Id), CanBeNull = false)]
-        public virtual DecisionLine DecisionLine { get; set; }
     }
 }

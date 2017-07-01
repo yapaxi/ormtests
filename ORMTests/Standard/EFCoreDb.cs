@@ -15,7 +15,7 @@ namespace ConsoleApp20
         {
             SqlServerDbContextOptionsExtensions.UseSqlServer(
                 optionsBuilder,
-                "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234");
+                ConsoleApp1.Connection.String);
             base.OnConfiguring(optionsBuilder);
         }
 

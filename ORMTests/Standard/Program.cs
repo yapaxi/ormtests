@@ -12,9 +12,15 @@ using System.Linq;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Toolchains;
+using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
+    public static class Connection
+    {
+        public static readonly string String = "Server=.\\sqlexpress;Database=OrderReturnService;user=yapaxi;password=test1234";
+    }
+
     [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 50)]
     public class Benchmarks
     {
@@ -35,6 +41,10 @@ namespace ConsoleApp1
             }
         }
 
+        [Benchmark] public Task<int> linq2db_no_includes_concurrent20each5_burst() => TestNoIncludes_Concurrent5Times_Burst<ReturnManagementDB>(count: 20);
+        [Benchmark] public Task<int> efCore_no_includes_concurrent20each5_burst() => TestNoIncludes_Concurrent5Times_Burst<EFCoreDbSimple>(count: 20);
+        [Benchmark] public Task<int> efCoreNoTrack_no_includes_concurrent20each5_burst() => TestNoIncludes_Concurrent5Times_Burst<EFCoreDbSimple>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
+
         [Benchmark] public int linq2db_no_includes20times_20root() => TestNoIncludes20Times<ReturnManagementDB>(count: 20);
         [Benchmark] public int efCore_no_includes20times_20root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 20);
         [Benchmark] public int efCoreNoTrack_no_includes20times_20root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
@@ -51,6 +61,37 @@ namespace ConsoleApp1
         [Benchmark] public int efCore_many_includes_20roots() => TestAllIncludes<EFCoreDb>(count: 20);
         [Benchmark] public int efCoreNoTrack_many_includes_20roots() => TestAllIncludes<EFCoreDb>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
+        private async Task<int> TestNoIncludes_Concurrent5Times_Burst<TDB>(int count, Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>> config = null)
+            where TDB : ISomeAll, new()
+        {
+            config = config ?? new Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>>(e => e);
+
+            using (var slim = new System.Threading.ManualResetEventSlim(false))
+            {
+                var taskFactory = new TaskFactory(TaskCreationOptions.LongRunning, TaskContinuationOptions.None);
+                var tasks = Enumerable.Range(0, count).Select(e => taskFactory.StartNew(() =>
+                {
+                    var x = 0;
+                    slim.Wait();
+                    for (var i = 0; i < 5; i++)
+                    {
+                        using (var db = new TDB())
+                        {
+                            if (config(db.GetOrderReturnsNoIncludes()).Where(q => q.Id == _any).FirstOrDefault() != null)
+                            {
+                                x++;
+                            }
+                        }
+                    }
+                    return x;
+                })).ToArray();
+
+                slim.Set();
+                await Task.WhenAll(tasks);
+                return tasks.Sum(e => e.Result);
+            }
+        }
+
         private int TestNoIncludes20Times<TDB>(int count, Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>> config = null)
             where TDB : ISomeAll, new()
         {
@@ -62,7 +103,10 @@ namespace ConsoleApp1
                 {
                     if (count == 1)
                     {
-                        config(db.GetOrderReturnsNoIncludes()).Where(e => e.Id == _any).FirstOrDefault();
+                        if (config(db.GetOrderReturnsNoIncludes()).Where(q => q.Id == _any).FirstOrDefault() != null)
+                        {
+                            x++;
+                        }
                     }
                     else
                     {
@@ -87,7 +131,10 @@ namespace ConsoleApp1
             {
                 if (count == 1)
                 {
-                    config(db.GetOrderReturnsWithAllIncludes()).Where(e => e.Id == _any).FirstOrDefault();
+                    if (config(db.GetOrderReturnsWithAllIncludes()).Where(q => q.Id == _any).FirstOrDefault() != null)
+                    {
+                        x++;
+                    }
                 }
                 else
                 {
@@ -126,7 +173,7 @@ namespace ConsoleApp1
     public class ReturnManagementDB : DataConnection, IDisposable, ISomeAll
     {
         public ReturnManagementDB()
-            : base("SqlServer.2014", "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234")
+            : base("SqlServer.2014", ConsoleApp1.Connection.String)
         {
         }
 

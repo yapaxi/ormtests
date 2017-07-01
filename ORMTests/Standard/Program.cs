@@ -18,7 +18,7 @@ namespace ConsoleApp1
 {
     public static class Connection
     {
-        public static readonly string String = "Server=.\\sqlexpress;Database=OrderReturnService;user=yapaxi;password=test1234";
+        public static readonly string String = "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234";
     }
 
     [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 50)]

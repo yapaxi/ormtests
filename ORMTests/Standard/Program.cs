@@ -87,7 +87,7 @@ namespace ConsoleApp1
     public class ReturnManagementDB : DataConnection, IDisposable, ISomeAll
     {
         public ReturnManagementDB()
-            : base("SqlServer.2014", "Server=.;Database=OrderReturnService;Integrated Security=SSPI")
+            : base("SqlServer.2014", "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234")
         {
         }
 

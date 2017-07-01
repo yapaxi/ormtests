@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using R1.MarketplaceManagement.OrderReturnService.DataAccess.Model;
-using ConsoleApp1;
+using Standard;
 
 namespace ConsoleApp20
 {
-    public abstract class EFCoreBase : DbContext, ISomeAll
+    public abstract class EFCoreBase : DbContext, INavigationSource
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             SqlServerDbContextOptionsExtensions.UseSqlServer(
                 optionsBuilder,
-                ConsoleApp1.Connection.String);
+                Standard.Connection.String);
             base.OnConfiguring(optionsBuilder);
         }
 

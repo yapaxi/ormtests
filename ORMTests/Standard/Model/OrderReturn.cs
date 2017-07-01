@@ -75,4 +75,56 @@ namespace R1.MarketplaceManagement.OrderReturnService.DataAccess.Model
         [System.ComponentModel.DataAnnotations.Schema.ForeignKey(nameof(CurrentDecisionId))]
         public virtual Decision CurrentDecision { get; set; }
     }
+
+    [System.ComponentModel.DataAnnotations.Schema.Table("OrderReturn")]
+    public class OrderReturnSimple
+    {
+        [PrimaryKey, Identity, NotNull]
+        public virtual int Id { get; set; }
+
+        [Column, NotNull]
+        public virtual string VenueReturnId { get; set; }
+
+        [Column, NotNull]
+        public virtual string PurchaseOrderId { get; set; }
+
+        [Column, NotNull]
+        public virtual int SellingVendorId { get; set; }
+
+        [Column, NotNull]
+        public virtual DateTime VenueCreatedOn { get; set; }
+
+        [Column, NotNull]
+        public virtual DateTime CreatedOn { get; set; }
+
+        [Column, Nullable]
+        public virtual DateTime? UpdatedOn { get; set; }
+
+        [Column, NotNull]
+        public virtual bool RefundWithoutReturn { get; set; }
+
+        [Column, NotNull]
+        public virtual OrderReturnStatus StatusId { get; set; }
+
+        [Column, NotNull]
+        public virtual int ReturnWorkflowStepId { get; set; }
+
+        [Column, Nullable]
+        public virtual string StatusMessage { get; set; }
+
+        [Column, Nullable]
+        public virtual string ShippingCarrier { get; set; }
+
+        [Column, Nullable]
+        public virtual string ShippingTrackingNumber { get; set; }
+
+        [Column, NotNull]
+        public virtual decimal ReturnCharge { get; set; }
+
+        [Column, NotNull]
+        public virtual bool IsInRecovery { get; set; }
+
+        [Column, Nullable]
+        public virtual int? CurrentDecisionId { get; set; }
+    }
 }

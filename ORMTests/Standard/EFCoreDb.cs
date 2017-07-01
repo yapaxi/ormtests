@@ -27,6 +27,7 @@ namespace ConsoleApp20
         }
 
         public DbSet<OrderReturn> OrderReturn { get; set; }
+        public DbSet<OrderReturnSimple> OrderReturnSimple { get; set; }
         public DbSet<OrderReturnLine> OrderReturnLine { get; set; }
         public DbSet<OrderReturnRawData> OrderReturnRawData { get; set; }
         public DbSet<OrderReturnLineFeedback> OrderReturnLineFeedback { get; set; }
@@ -37,7 +38,12 @@ namespace ConsoleApp20
         public DbSet<DecisionLabel> DecisionLabel { get; set; }
         public DbSet<DecisionRefund> DecisionRefund { get; set; }
 
-        public IQueryable<OrderReturn> GetAll()
+        public IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes()
+        {
+            return OrderReturnSimple;
+        }
+
+        public IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes()
         {
             return OrderReturn
                     .Include(e => e.ReturnLines).ThenInclude(e => e.Reason)

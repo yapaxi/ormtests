@@ -21,7 +21,7 @@ namespace ConsoleApp1
         public static readonly string String = "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234";
     }
 
-    [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 50)]
+    [SimpleJob(launchCount: 2, targetCount: 10, invocationCount: 200)]
     public class Benchmarks
     {
         private readonly int _min;

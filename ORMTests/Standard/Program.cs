@@ -35,13 +35,13 @@ namespace ConsoleApp1
             }
         }
 
-        [Benchmark] public int linq2db_no_includes_20root() => TestNoIncludes<ReturnManagementDB>(count: 20);
-        [Benchmark] public int efCore_no_includes_20root() => TestNoIncludes<EFCoreDbSimple>(count: 20);
-        [Benchmark] public int efCoreNoTrack_no_includes_20root() => TestNoIncludes<EFCoreDbSimple>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
+        [Benchmark] public int linq2db_no_includes20times_20root() => TestNoIncludes20Times<ReturnManagementDB>(count: 20);
+        [Benchmark] public int efCore_no_includes20times_20root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 20);
+        [Benchmark] public int efCoreNoTrack_no_includes20times_20root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
-        [Benchmark] public int linq2db_no_includes_1root() => TestNoIncludes<ReturnManagementDB>(count: 1);
-        [Benchmark] public int efCore_no_includes_1root() => TestNoIncludes<EFCoreDbSimple>(count: 1);
-        [Benchmark] public int efCoreNoTrack_no_includes_1root() => TestNoIncludes<EFCoreDbSimple>(count: 1, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
+        [Benchmark] public int linq2db_no_includes20times_1root() => TestNoIncludes20Times<ReturnManagementDB>(count: 1);
+        [Benchmark] public int efCore_no_includes20times_1root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 1);
+        [Benchmark] public int efCoreNoTrack_no_includes20times_1root() => TestNoIncludes20Times<EFCoreDbSimple>(count: 1, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
         [Benchmark] public int linq2db_many_includes_1root() => TestAllIncludes<ReturnManagementDB>(count: 1);
         [Benchmark] public int efCore_many_includes_1root() => TestAllIncludes<EFCoreDb>(count: 1);
@@ -51,23 +51,26 @@ namespace ConsoleApp1
         [Benchmark] public int efCore_many_includes_20roots() => TestAllIncludes<EFCoreDb>(count: 20);
         [Benchmark] public int efCoreNoTrack_many_includes_20roots() => TestAllIncludes<EFCoreDb>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
-        private int TestNoIncludes<TDB>(int count, Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>> config = null)
+        private int TestNoIncludes20Times<TDB>(int count, Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>> config = null)
             where TDB : ISomeAll, new()
         {
             var x = 0;
             config = config ?? new Func<IQueryable<OrderReturnSimple>, IQueryable<OrderReturnSimple>>(e => e);
-            using (var db = new TDB())
+            for (int i = 0; i < 20; i++)
             {
-                if (count == 1)
+                using (var db = new TDB())
                 {
-                    config(db.GetOrderReturnsNoIncludes()).Where(e => e.Id == _any).FirstOrDefault();
-                }
-                else
-                {
-                    var rt = config(db.GetOrderReturnsNoIncludes()).Where(e => e.Id >= _any && e.Id < _any + count).ToArray();
-                    if (rt.Any())
+                    if (count == 1)
                     {
-                        x++;
+                        config(db.GetOrderReturnsNoIncludes()).Where(e => e.Id == _any).FirstOrDefault();
+                    }
+                    else
+                    {
+                        var rt = config(db.GetOrderReturnsNoIncludes()).Where(e => e.Id >= _any && e.Id < _any + count).ToArray();
+                        if (rt.Any())
+                        {
+                            x++;
+                        }
                     }
                 }
             }

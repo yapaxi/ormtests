@@ -34,13 +34,14 @@ namespace ConsoleApp1
                 Console.WriteLine($"{_min},{_any},{_max}");
             }
         }
+
         [Benchmark] public int linq2db_no_includes_20root() => TestNoIncludes<ReturnManagementDB>(count: 20);
-        [Benchmark] public int efCore_no_includes_20root() => TestNoIncludes<EFCoreDb>(count: 20);
-        [Benchmark] public int efCoreNoTrack_no_includes_20root() => TestNoIncludes<EFCoreDb>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
+        [Benchmark] public int efCore_no_includes_20root() => TestNoIncludes<EFCoreDbSimple>(count: 20);
+        [Benchmark] public int efCoreNoTrack_no_includes_20root() => TestNoIncludes<EFCoreDbSimple>(count: 20, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
         [Benchmark] public int linq2db_no_includes_1root() => TestNoIncludes<ReturnManagementDB>(count: 1);
-        [Benchmark] public int efCore_no_includes_1root() => TestNoIncludes<EFCoreDb>(count: 1);
-        [Benchmark] public int efCoreNoTrack_no_includes_1root() => TestNoIncludes<EFCoreDb>(count: 1, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
+        [Benchmark] public int efCore_no_includes_1root() => TestNoIncludes<EFCoreDbSimple>(count: 1);
+        [Benchmark] public int efCoreNoTrack_no_includes_1root() => TestNoIncludes<EFCoreDbSimple>(count: 1, config: e => Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.AsNoTracking(e));
 
         [Benchmark] public int linq2db_many_includes_1root() => TestAllIncludes<ReturnManagementDB>(count: 1);
         [Benchmark] public int efCore_many_includes_1root() => TestAllIncludes<EFCoreDb>(count: 1);

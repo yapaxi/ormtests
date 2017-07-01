@@ -9,9 +9,36 @@ using ConsoleApp1;
 
 namespace ConsoleApp20
 {
+    public abstract class EFCoreBase : DbContext, ISomeAll
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            SqlServerDbContextOptionsExtensions.UseSqlServer(
+                optionsBuilder,
+                "Server=192.168.100.7;Database=OrderReturnService;user=yapaxi;password=test1234");
+            base.OnConfiguring(optionsBuilder);
+        }
 
+        public abstract IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes();
+        public abstract IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes();
+    }
 
-    public class EFCoreDb : DbContext, ISomeAll
+    public class EFCoreDbSimple : EFCoreBase
+    {
+        public DbSet<OrderReturnSimple> OrderReturnSimple { get; set; }
+
+        public override IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes()
+        {
+            return OrderReturnSimple;
+        }
+
+        public override IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class EFCoreDb : EFCoreBase
     {
         public EFCoreDb() : base()
         {
@@ -27,7 +54,6 @@ namespace ConsoleApp20
         }
 
         public DbSet<OrderReturn> OrderReturn { get; set; }
-        public DbSet<OrderReturnSimple> OrderReturnSimple { get; set; }
         public DbSet<OrderReturnLine> OrderReturnLine { get; set; }
         public DbSet<OrderReturnRawData> OrderReturnRawData { get; set; }
         public DbSet<OrderReturnLineFeedback> OrderReturnLineFeedback { get; set; }
@@ -38,12 +64,12 @@ namespace ConsoleApp20
         public DbSet<DecisionLabel> DecisionLabel { get; set; }
         public DbSet<DecisionRefund> DecisionRefund { get; set; }
 
-        public IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes()
+        public override IQueryable<OrderReturnSimple> GetOrderReturnsNoIncludes()
         {
-            return OrderReturnSimple;
+            throw new NotImplementedException();
         }
 
-        public IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes()
+        public override IQueryable<OrderReturn> GetOrderReturnsWithAllIncludes()
         {
             return OrderReturn
                     .Include(e => e.ReturnLines).ThenInclude(e => e.Reason)

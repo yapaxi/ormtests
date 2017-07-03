@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Standard
 {
-    [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 50)]
+    [SimpleJob(launchCount: 1, targetCount: 10, invocationCount: 100)]
     public class ReadBenchmarks
     {
         private readonly int _min;
